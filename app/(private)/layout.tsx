@@ -16,11 +16,7 @@ export default function PrivateLayout({
 
 	return (
 		<TokenValidationChecker>
-			<main
-			// vaul-drawer-wrapper="" // Needed for the drawer to work with scale animation
-			>
-				{children}
-			</main>
+			<main>{children}</main>
 			<div className="fixed bottom-5 right-5 hidden lg:inline">
 				<ModeToggle />
 			</div>

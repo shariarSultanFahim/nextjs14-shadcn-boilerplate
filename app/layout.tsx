@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import ClientLayout from "./layout.client";
+import { Toaster as Sonner } from "@/components/ui/sonner"; // Toasts
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -24,17 +26,20 @@ export default function RootLayout({
 				className={cn(outfit.className, "bg-background")}
 				suppressHydrationWarning
 			>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					{children}
-					<div className="fixed bottom-5 right-5">
-						<ModeToggle />
-					</div>
-				</ThemeProvider>
+				<ClientLayout>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+						<Sonner /> {/* Toasts */}
+						<div className="fixed bottom-5 right-5">
+							<ModeToggle />
+						</div>
+					</ThemeProvider>
+				</ClientLayout>
 			</body>
 		</html>
 	);

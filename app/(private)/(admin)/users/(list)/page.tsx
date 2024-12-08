@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { CreateUser } from "./create-users";
+import UserTable from "./usertable";
 
 export default function UsersListPage() {
 	return (
@@ -15,9 +16,9 @@ export default function UsersListPage() {
       </div>
       <Separator />
 
-      {/* <div className="px-9">
-        <UserTable />
-      </div> */}
+      <div className="px-9">
+        <UserTable/>
+      </div>
     </div>
 	);
 }

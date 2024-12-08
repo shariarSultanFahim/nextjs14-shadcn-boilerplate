@@ -55,7 +55,7 @@ const CreateUsersSchema = z.object({
     message: "Last name must be at least 1 character.",
   }),
   bio: z.string().optional(),
-  dob: z.string().optional(),
+  dob: z.any().optional(),
   phone: z
     .string()
     .min(11, {
@@ -90,7 +90,7 @@ export function CreateUser() {
       first_name: "",
       last_name: "",
       bio: "",
-      dob: "",
+      dob: null,
       phone: "",
       secondary_phone: "",
       secondary_email: "",
@@ -124,7 +124,7 @@ export function CreateUser() {
           });
         });
         toast("Error!", {
-          description: `There was an error creating employee. Please try again.`,
+          description: `There was an error creating user. Please try again.`,
           action: {
             label: "Retry",
             onClick: () => onSubmit(data),

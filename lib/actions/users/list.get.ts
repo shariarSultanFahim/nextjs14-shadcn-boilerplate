@@ -5,7 +5,7 @@ interface GetUserParams {
 	page: number;
 }
 
-export const useGetUsers = (params: GetUserParams) => {
+export const useGetUsers = (params?: GetUserParams) => {
 	return useQuery({
 		queryKey: ["get-list-users", params],
 		queryFn: () =>

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import instance from "..";
 
 const update = ({ id, data }: { id: number | string; data: any }) => {
-  return instance.patch(`/crm-employees/${id}`, { ...data });
+  return instance.patch(`/users/${id}`, { ...data });
 };
 
 export const useUpdateUser = () => {
@@ -12,7 +12,7 @@ export const useUpdateUser = () => {
     onSuccess: () => {
       // Query invalidation
       queryClient.invalidateQueries({
-        queryKey: ["get-list-users"],
+        queryKey: ["get-list-users","get-user-by-id"],
       });
     },
   });

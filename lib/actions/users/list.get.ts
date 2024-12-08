@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import instance from "..";
 
 interface GetUserParams {
-	page: number;
+	page?: number;
+	user_role?:string | null;
 }
 
 export const useGetUsers = (params?: GetUserParams) => {

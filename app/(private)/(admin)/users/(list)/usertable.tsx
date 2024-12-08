@@ -46,6 +46,10 @@ import Link from "next/link";
 import { useDeleteUser } from "@/lib/actions/users/delete-user";
 import { useGetUsers } from "@/lib/actions/users/list.get";
 import moment from "moment";
+import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { UpdateUser } from "./update-user";
+import { TbUserEdit } from "react-icons/tb";
 
 export interface User {
   id: number;
@@ -135,11 +139,12 @@ export const columns: ColumnDef<User>[] = [
       const user = row.original;
       return (
         <>
-          {/* <UpdateEmployee employeeId={user.id}>
+        {/* This is a reuseable component */}
+          <UpdateUser id={user?.id}>
             <Button size={"icon"} variant={"ghost"}>
-              <TbUserEdit />
+                <TbUserEdit />
             </Button>
-          </UpdateEmployee> */}
+          </UpdateUser>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -150,21 +155,7 @@ export const columns: ColumnDef<User>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* <DropdownMenuItem
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    `ID: ${employee.id?.toString()}\nFirst Name: ${
-                      employee?.first_name
-                    }\nLast Name: ${employee?.last_name}\nPhone: ${
-                      employee.phone
-                    }\nEmail: ${employee.email}`
-                  )
-                }
-              >
-                Copy Information
-              </DropdownMenuItem> */}
-
-              <Link href={`/user/${user.id}`}>
+              <Link href={`/users/${user.id}`}>
                 <DropdownMenuItem>View profile</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
@@ -212,16 +203,12 @@ const DeleteUser: React.FC<{ id: number }> = ({ id }) => {
 
 export default function UserTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [page,setPage] = React.useState(0)
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const { data, isLoading } = useGetUsers({ page });
+  const [page, setPage] = React.useState(0);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [userRole, setUserRole] = React.useState<string | null>(null);
+  const { data, isLoading } = useGetUsers({ page, user_role: userRole });
 
-
-  console.log(data?.data.data)
 
   const table = useReactTable({
     data: React.useMemo(() => data?.data.data || [], [data]),
@@ -251,6 +238,32 @@ export default function UserTable() {
           }
           className="max-w-sm"
         />
+
+        <Select
+            onValueChange={(v) => setUserRole(v)}
+
+            value={userRole || undefined}
+          >
+            <SelectTrigger className="border-dashed gap-1 w-fit">
+              <SelectValue placeholder="Filter User Type" />
+            </SelectTrigger>
+            <SelectContent>
+              {["ADMIN", "STUDENT", "FACULTY"].map((role) => (
+                <SelectItem key={role} value={role} className="text-center items-center">
+                  {role}
+                </SelectItem>
+              ))}
+              <Separator />
+              <Button
+                variant="destructive"
+                className="w-full mt-1 font-normal"
+                onClick={() => setUserRole(null)}
+              >
+                Clear filters
+              </Button>
+            </SelectContent>
+        </Select>
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto flex">

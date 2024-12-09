@@ -20,7 +20,11 @@ import {
   TableLoading,
   TableRow,
 } from "@/components/ui/table";
+import { useGetCourseById } from "@/lib/actions/courses/course-by-id";
 import { useGetCourses } from "@/lib/actions/courses/course.get";
+import { useDeleteCourse } from "@/lib/actions/courses/delete-course";
+import { useUpdateCourse } from "@/lib/actions/courses/update-course";
+import handleResponse from "@/lib/response.utils";
 import { DotsHorizontalIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
@@ -36,8 +40,11 @@ import {
 import moment from "moment";
 import Link from "next/link";
 import * as React from "react";
-import { UpdateCourse } from "./Update-course";
-import { DeleteCourse } from "./delete-course";
+import { useState } from "react";
+import { toast } from "sonner";
+import CreateCourseForm from "./course-form";
+
+// import { UpdateCourse } from "./update-course";
 
 export interface Course {
   id: number;
@@ -67,6 +74,13 @@ export const columns: ColumnDef<Course>[] = [
       <div className="mx-4">{row.getValue("course_title")}</div>
     ),
   },
+  //   {
+  //     accessorKey: "course_description",
+  //     header: () => <div className="mx-4">Course Description</div>,
+  //     cell: ({ row }) => (
+  //       <div className="mx-4">{row.getValue("course_description")}</div>
+  //     ),
+  //   },
   {
     accessorKey: "course_credits",
     header: () => <div className="mx-4">Credits</div>,
@@ -118,12 +132,12 @@ export const columns: ColumnDef<Course>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem>
-                <Link href={`/courses/${course.id}`}>View Course</Link>
+                <Link href={`/faculty/courses/${course.id}`}>View Course</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DeleteCourse id={course.id} />
               <DropdownMenuSeparator />
-              <UpdateCourse courseId={course.id} />
+              {/* <UpdateCourse courseId={course.id} /> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </>
@@ -132,74 +146,74 @@ export const columns: ColumnDef<Course>[] = [
   },
 ];
 
-// export function UpdateCourse({ courseId }) {
-//   const [isCreateCourseOpen, setIsCreateCourseOpen] = useState(false);
-//   const { data: course } = useGetCourseById(courseId);
-//   const { mutateAsync: update } = useUpdateCourse();
-//   // console.log("courseId", courseId);
-//   // console.log("course to update", course);
+export function UpdateCourse({ courseId }) {
+  const [isCreateCourseOpen, setIsCreateCourseOpen] = useState(false);
+  const { data: course } = useGetCourseById(courseId);
+  const { mutateAsync: update } = useUpdateCourse();
+  // console.log("courseId", courseId);
+  // console.log("course to update", course);
 
-//   // Need To Debug
-//   const handleUpdate = async (updatedData: unknown) => {
-//     console.log("updatedData", updatedData);
-//     const res = await handleResponse(
-//       () => update({ id: courseId, updatedData }),
-//       200
-//     );
-//     console.log("res", res);
-//     // const res = await update({ id: courseId, ...data });
-//     if (res.status) {
-//       toast("Course Updated!", {
-//         description: "The course has been updated successfully.",
-//       });
-//       setIsCreateCourseOpen(false);
-//     } else {
-//       toast.error("Error updating course");
-//     }
-//   };
+  // Need To Debug
+  const handleUpdate = async (updatedData: unknown) => {
+    console.log("updatedData", updatedData);
+    const res = await handleResponse(
+      () => update({ id: courseId, updatedData }),
+      200
+    );
+    console.log("res", res);
+    // const res = await update({ id: courseId, ...data });
+    if (res.status) {
+      toast("Course Updated!", {
+        description: "The course has been updated successfully.",
+      });
+      setIsCreateCourseOpen(false);
+    } else {
+      toast.error("Error updating course");
+    }
+  };
 
-//   return (
-//     <CreateCourseForm
-//       initialData={course?.data.data}
-//       open={isCreateCourseOpen}
-//       setOpen={setIsCreateCourseOpen}
-//       onSubmit={handleUpdate}
-//     />
-//   );
-// }
+  return (
+    <CreateCourseForm
+      initialData={course?.data.data}
+      open={isCreateCourseOpen}
+      setOpen={setIsCreateCourseOpen}
+      onSubmit={handleUpdate}
+    />
+  );
+}
 
-// const DeleteCourse: React.FC<{ id: number }> = ({ id }) => {
-//   const { mutateAsync: Delete, isPending: isDeleting } = useDeleteCourse();
+const DeleteCourse: React.FC<{ id: number }> = ({ id }) => {
+  const { mutateAsync: Delete, isPending: isDeleting } = useDeleteCourse();
 
-//   async function onDelete(id: number) {
-//     // Handle the delete response
-//     const res = await handleResponse(() => Delete(id), 204);
-//     if (res.status) {
-//       toast("Deleted!", {
-//         description: `Course has been deleted successfully.`,
-//         closeButton: true,
-//       });
-//     } else {
-//       toast("Error!", {
-//         description: res.message,
-//         action: {
-//           label: "Retry",
-//           onClick: () => onDelete(id),
-//         },
-//       });
-//     }
-//   }
+  async function onDelete(id: number) {
+    // Handle the delete response
+    const res = await handleResponse(() => Delete(id), 204);
+    if (res.status) {
+      toast("Deleted!", {
+        description: `Course has been deleted successfully.`,
+        closeButton: true,
+      });
+    } else {
+      toast("Error!", {
+        description: res.message,
+        action: {
+          label: "Retry",
+          onClick: () => onDelete(id),
+        },
+      });
+    }
+  }
 
-//   return (
-//     <DropdownMenuItem
-//       className="bg-red-500 focus:bg-red-400 text-white focus:text-white"
-//       onClick={() => onDelete(id)}
-//       disabled={isDeleting}
-//     >
-//       Delete Course
-//     </DropdownMenuItem>
-//   );
-// };
+  return (
+    <DropdownMenuItem
+      className="bg-red-500 focus:bg-red-400 text-white focus:text-white"
+      onClick={() => onDelete(id)}
+      disabled={isDeleting}
+    >
+      Delete Course
+    </DropdownMenuItem>
+  );
+};
 
 export default function CourseTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);

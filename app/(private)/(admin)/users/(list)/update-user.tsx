@@ -78,16 +78,11 @@ const UpdateUserSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
-  user_role: z.enum(["STUDENT", "TEACHER", "ADMIN"]),
+  user_role: z.enum(["STUDENT", "FACULTY", "ADMIN"]),
   is_active: z.boolean(),
 });
 
 type UsersFormValues = z.infer<typeof UpdateUserSchema>;
-
-interface UpdateUserProps {
-  id: number;
-  children: React.ReactNode;
-}
 
 export function UpdateUser({
   children,
@@ -100,24 +95,23 @@ export function UpdateUser({
 
   const { data: user,isLoading } = useGetUserById(id);
 
-  const [userData,setUserData] = useState(user?.data)
 
   const form = useForm<UsersFormValues>({
     resolver: zodResolver(UpdateUserSchema),
     defaultValues: {
-        first_name: userData?.data.profile.first_name || "",
-        last_name: userData?.data.profile.last_name || "",
-        bio: userData?.data.profile.bio || "",
-        dob: userData?.data.profile.dob || null,
-        phone: userData?.data.profile.phone || "",
-        secondary_phone: userData?.data.profile.secondary_phone || "",
-        secondary_email: userData?.data.profile.secondary_email || "",
-        address: userData?.data.profile.address || "",
-        secondary_address: userData?.data.profile.secondary_address || "",
-        email: userData?.data.email || "",
+        first_name: user?.data?.data.profile.first_name || "",
+        last_name: user?.data?.data.profile.last_name || "",
+        bio: user?.data?.data.profile.bio || "",
+        dob: user?.data?.data.profile.dob || null,
+        phone: user?.data?.data.profile.phone || "",
+        secondary_phone: user?.data?.data.profile.secondary_phone || "",
+        secondary_email: user?.data?.data.profile.secondary_email || "",
+        address: user?.data?.data.profile.address || "",
+        secondary_address: user?.data?.data.profile.secondary_address || "",
+        email: user?.data?.data.email || "",
         password: "",
-        user_role: userData?.data.user_role || null,
-        is_active: userData?.data.is_active || true,
+        user_role: user?.data?.data.user_role || null,
+        is_active: user?.data?.data.is_active || true,
     },
     mode: "onChange",
   });
@@ -172,7 +166,14 @@ export function UpdateUser({
               Complete the form below to update the user information.
             </SheetDescription>
           </SheetHeader>
-          <Form {...form}>
+          {isLoading ? (
+            <div className="space-y-4 mt-5">
+              <Skeleton className="h-16" />
+              <Skeleton className="h-16" />
+              <Skeleton className="h-16" />
+              <Skeleton className="h-10 w-24 float-right" />
+            </div>
+          ) : (<Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-3 mt-6 px-1"
@@ -421,7 +422,7 @@ export function UpdateUser({
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="STUDENT">Student</SelectItem>
-                        <SelectItem value="TEACHER">Teacher</SelectItem>
+                        <SelectItem value="FACULTY">Faculty</SelectItem>
                         <SelectItem value="ADMIN">Admin</SelectItem>
                       </SelectContent>
                     </Select>
@@ -464,7 +465,7 @@ export function UpdateUser({
                 </Button>
               </SheetFooter>
             </form>
-          </Form>
+          </Form>)}
         </SheetContent>
       </Sheet>
     </>

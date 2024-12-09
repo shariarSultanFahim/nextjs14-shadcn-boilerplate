@@ -1,5 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 
+import CourseList from "./components/course-list";
 import CreateCourse from "./components/create-course";
 export default function CoursesPage() {
   return (
@@ -15,7 +16,9 @@ export default function CoursesPage() {
       </div>
       <Separator />
 
-      <div className="px-9"></div>
+      <div className="px-9">
+        <CourseList />
+      </div>
     </div>
   );
 }

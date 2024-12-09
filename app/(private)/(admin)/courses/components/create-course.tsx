@@ -27,9 +27,12 @@ import {
   SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useCreateCourse } from "@/lib/actions/courses/create-course";
+import handleResponse from "@/lib/response.utils";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
@@ -67,6 +70,7 @@ type CourseFormValues = z.infer<typeof CreateCourseSchema>;
 
 export default function CreateCourse() {
   const [open, setOpen] = useState(false);
+  const { mutateAsync: create, isPending } = useCreateCourse();
 
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(CreateCourseSchema),
@@ -84,12 +88,41 @@ export default function CreateCourse() {
   });
 
   async function onSubmit(data: CourseFormValues) {
+    form.clearErrors();
+
     console.log(data);
-    toast("Added!", {
-      description: `Course "${data.course_title}" has been created successfully.`,
-    });
-    form.reset();
-    setOpen(false);
+    const res = await handleResponse(() => create(data), [201]);
+    if (res.status) {
+      toast("Added!", {
+        description: `User has been created successfully.`,
+      });
+      form.reset();
+      setOpen(false);
+    } else {
+      if (typeof res.data === "object") {
+        Object.entries(res.data).forEach(([key, value]) => {
+          form.setError(key as keyof UsersFormValues, {
+            type: "validate",
+            message: value as string,
+          });
+        });
+        toast("Error!", {
+          description: `There was an error creating user. Please try again.`,
+          action: {
+            label: "Retry",
+            onClick: () => onSubmit(data),
+          },
+        });
+      } else {
+        toast("Error!", {
+          description: res.message,
+          action: {
+            label: "Retry",
+            onClick: () => onSubmit(data),
+          },
+        });
+      }
+    }
   }
 
   return (
@@ -306,14 +339,14 @@ export default function CreateCourse() {
               )}
             />
 
-            <div className="flex justify-end space-x-2">
+            <SheetFooter>
               <SheetClose asChild>
-                <Button type="button" variant="ghost">
-                  Cancel
-                </Button>
+                <Button variant={"ghost"}>Cancel</Button>
               </SheetClose>
-              <Button type="submit">Save Course</Button>
-            </div>
+              <Button type="submit" disabled={isPending}>
+                Save
+              </Button>
+            </SheetFooter>
           </form>
         </Form>
       </SheetContent>

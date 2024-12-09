@@ -38,6 +38,9 @@ import {
 } from "@/components/ui/table";
 import { useGetCourses } from "@/lib/actions/courses/course.get";
 import { useDeleteCourse } from "@/lib/actions/courses/delete-course";
+import handleResponse from "@/lib/response.utils";
+import { toast } from "sonner";
+
 // import { UpdateCourse } from "./update-course";
 
 export interface Course {
@@ -82,6 +85,7 @@ export const columns: ColumnDef<Course>[] = [
       <div className="mx-4">{row.getValue("course_credits")}</div>
     ),
   },
+
   {
     accessorKey: "course_start_date",
     header: () => <div className="mx-4">Start Date</div>,

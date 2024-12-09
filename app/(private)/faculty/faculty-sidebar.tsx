@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { GraduationCap, Home, Settings, Users2 } from "lucide-react";
+import { GraduationCap, Home, Settings } from "lucide-react";
 import Link from "next/link";
 
 // Menu items.
@@ -17,11 +17,6 @@ const items = [
     title: "Home",
     url: "/dashboard",
     icon: Home,
-  },
-  {
-    title: "Users",
-    url: "/users",
-    icon: Users2,
   },
   {
     title: "Courses",
@@ -35,7 +30,7 @@ const items = [
   },
 ];
 
-export function AdminSidebar() {
+export function FacultySidebar() {
   return (
     <Sidebar>
       <SidebarContent>

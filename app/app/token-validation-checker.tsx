@@ -3,6 +3,7 @@
 import { authService } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { useValidate } from "../../lib/actions/auth/validate.get";
+import { useEffect } from "react";
 
 export const Loading = () => {
 	return (
@@ -36,8 +37,20 @@ const TokenValidationChecker = ({
 	children: React.ReactNode;
 }>) => {
 	// Check if the user is logged in
-	const { isLoading, isError, error } = useValidate();
+	const { isLoading, isError, error, data } = useValidate();
 	const router = useRouter();
+
+	useEffect(() => {
+		if (!data) return;
+
+		if (data?.data.user_role === "STUDENT") router.replace("/app/student");
+
+		if (data?.data.user_role === "FACULTY") router.replace("/app/faculty");
+
+		if (data?.data.user_role === "ADMIN") router.replace("/app/admin");
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data]);
 
 	if (isLoading) {
 		return <Loading />;

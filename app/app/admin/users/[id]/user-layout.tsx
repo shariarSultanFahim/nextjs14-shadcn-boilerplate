@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useGetUserById } from "@/lib/actions/users/user-by-id";
 import { UpdateUser } from "../(list)/update-user";
-import { Loading } from "@/app/(private)/token-validation-checker";
+import { Loading } from "@/app/app/token-validation-checker";
 
 export default function UserLayout({
 	children,
@@ -13,7 +13,7 @@ export default function UserLayout({
 }: Readonly<{ children: React.ReactNode; params: { id: number } }>) {
 	const { data } = useGetUserById(params.id);
 	return !data ? (
-		<Loading/>
+		<Loading />
 	) : (
 		<>
 			<div className="min-h-screen flex flex-col">
@@ -24,7 +24,9 @@ export default function UserLayout({
 								User Details #{params.id}
 							</h1>
 							<Badge
-								variant={data?.data?.data?.is_active ? "success" : "destructive"}
+								variant={
+									data?.data?.data?.is_active ? "success" : "destructive"
+								}
 								className="text-[10px] font-bold"
 							>
 								{data?.data?.data?.is_active ? "Active" : "Inactive"}

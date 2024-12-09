@@ -10,7 +10,7 @@ export default function PublicLayout({
 	// Check if the user is already logged in
 	const token = cookies().get("access_token")?.value;
 	if (token) {
-		redirect("/dashboard", RedirectType.replace);
+		redirect("/app", RedirectType.replace);
 	}
 
 	return (

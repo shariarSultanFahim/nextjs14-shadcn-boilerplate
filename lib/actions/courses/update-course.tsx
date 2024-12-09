@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import instance from "..";
 
-const update = ({ id, data }: { id: number | string; data: unknown }) => {
-  return instance.patch(`/users/${id}`, { ...data });
+const update = ({ id, data }: { id: number | string; data: any }) => {
+  console.log("data", data);
+  return instance.patch(`/courses/${id}`, { ...data });
 };
 
 export const useUpdateCourse = () => {

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import instance from "..";
 
 export const getCourseById = async (id: number | string | null) => {
+  console.log("id", id);
   return instance.get(`/courses/${id}`);
 };
 

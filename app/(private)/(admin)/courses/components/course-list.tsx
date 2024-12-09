@@ -1,22 +1,4 @@
 "use client";
-import { useGetCourses } from "@/lib/actions/courses/course.get";
-import { useUpdateCourse } from "@/lib/actions/courses/update-course";
-import { DotsHorizontalIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import moment from "moment";
-import * as React from "react";
-import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -39,8 +21,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetCourseById } from "@/lib/actions/courses/course-by-id";
+import { useGetCourses } from "@/lib/actions/courses/course.get";
 import { useDeleteCourse } from "@/lib/actions/courses/delete-course";
+import { useUpdateCourse } from "@/lib/actions/courses/update-course";
 import handleResponse from "@/lib/response.utils";
+import { DotsHorizontalIcon, MixerHorizontalIcon } from "@radix-ui/react-icons";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import moment from "moment";
+import Link from "next/link";
+import * as React from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import CreateCourseForm from "./course-form";
 
@@ -131,12 +131,13 @@ export const columns: ColumnDef<Course>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* Add your link to view course or any other action */}
-              <DropdownMenuItem>View Course</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/courses/${course.id}`}>View Course</Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DeleteCourse id={course.id} />
               <DropdownMenuSeparator />
-              <UpdateCourse courseId={course.id} />
+              {/* <UpdateCourse courseId={course.id} /> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </>

@@ -74,7 +74,7 @@ const CreateUsersSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
-  user_role: z.enum(["STUDENT", "TEACHER", "ADMIN"]),
+  user_role: z.enum(["STUDENT", "FACULTY", "ADMIN"]),
   is_active: z.boolean(),
 });
 
@@ -403,7 +403,7 @@ export function CreateUser() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="STUDENT">Student</SelectItem>
-                        <SelectItem value="TEACHER">Teacher</SelectItem>
+                        <SelectItem value="FACULTY">Faculty</SelectItem>
                         <SelectItem value="ADMIN">Admin</SelectItem>
                       </SelectContent>
                     </Select>

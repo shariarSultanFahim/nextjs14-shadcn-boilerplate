@@ -132,7 +132,7 @@ export const columns: ColumnDef<Course>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem>
-                <Link href={`/courses/${course.id}`}>View Course</Link>
+                <Link href={`/faculty/courses/${course.id}`}>View Course</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DeleteCourse id={course.id} />

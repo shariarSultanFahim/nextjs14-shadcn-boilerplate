@@ -1,4 +1,3 @@
-// CreateCourse.tsx
 "use client";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -116,10 +115,10 @@ export default function CreateCourseForm({
 
   return (
     <Sheet open={open} onOpenChange={(o) => setOpen(o)}>
-      <Button onClick={() => setOpen(true)}>Add New Course</Button>
+      <Button onClick={() => setOpen(true)}>Edit Course</Button>
       <SheetContent className="max-h-screen overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Create Course</SheetTitle>
+          <SheetTitle>Update Course</SheetTitle>
           <SheetDescription>
             Complete the form below to create a new course.
           </SheetDescription>

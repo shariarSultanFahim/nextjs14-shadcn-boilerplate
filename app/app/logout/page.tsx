@@ -4,10 +4,12 @@ import { authService } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { Loading } from "../token-validation-checker";
 import { useLogout } from "@/lib/actions/auth/logout.get";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SignoutPage() {
 	const router = useRouter();
 	const { mutateAsync } = useLogout();
+	const queryClient = useQueryClient();
 
 	const logout = async () => {
 		try {
@@ -16,6 +18,7 @@ export default function SignoutPage() {
 			console.error(err);
 		}
 		authService.removeToken();
+		queryClient.clear();
 		router.refresh();
 	};
 

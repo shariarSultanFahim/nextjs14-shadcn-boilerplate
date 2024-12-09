@@ -51,7 +51,7 @@ function SignForm() {
 
 			// Generating Toast
 			toast("Logged in successfully!", {
-				description: `Welcome back, ${res.data.username}`,
+				description: `Welcome back!!`,
 			});
 
 			// Redirect to dashboard

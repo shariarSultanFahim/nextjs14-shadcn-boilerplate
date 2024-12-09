@@ -4,6 +4,7 @@ import { authService } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
 import { useValidate } from "../../lib/actions/auth/validate.get";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export const Loading = () => {
 	return (
@@ -39,15 +40,25 @@ const TokenValidationChecker = ({
 	// Check if the user is logged in
 	const { isLoading, isError, error, data } = useValidate();
 	const router = useRouter();
+	const pathname = usePathname();
 
 	useEffect(() => {
 		if (!data) return;
 
-		if (data?.data.user_role === "STUDENT") router.replace("/app/student");
+		if (
+			data?.data.user_role === "STUDENT" &&
+			!pathname.startsWith("/app/student")
+		)
+			router.replace("/app/student");
 
-		if (data?.data.user_role === "FACULTY") router.replace("/app/faculty");
+		if (
+			data?.data.user_role === "FACULTY" &&
+			!pathname.startsWith("/app/faculty")
+		)
+			router.replace("/app/faculty");
 
-		if (data?.data.user_role === "ADMIN") router.replace("/app/admin");
+		if (data?.data.user_role === "ADMIN" && !pathname.startsWith("/app/admin"))
+			router.replace("/app/admin");
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);

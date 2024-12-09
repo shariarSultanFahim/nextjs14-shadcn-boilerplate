@@ -221,7 +221,7 @@ export default function CreateCourse() {
 											<PopoverContent className="w-auto p-0">
 												<Calendar
 													mode="single"
-													captionLayout="dropdown"
+													captionLayout="dropdown-buttons"
 													selected={
 														field.value ? new Date(field.value) : undefined
 													}
@@ -269,7 +269,7 @@ export default function CreateCourse() {
 											<PopoverContent className="w-auto p-0">
 												<Calendar
 													mode="single"
-													captionLayout="dropdown"
+													captionLayout="dropdown-buttons"
 													selected={
 														field.value ? new Date(field.value) : undefined
 													}

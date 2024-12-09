@@ -41,32 +41,35 @@ import CreateSection from "./components/create-section";
 import SectionList from "./components/section-list";
 
 export default function CourseDetailPage() {
-  const params = useParams();
-  const { data } = useGetCourseById(params.id);
-  const course = data?.data.data;
-  const course_sections = course?.course_sections;
+	const params = useParams<{ id: string }>();
+	const { data } = useGetCourseById(params.id);
+	const course = data?.data.data;
+	const course_sections = course?.course_sections;
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+	const [drawerOpen, setDrawerOpen] = useState(false);
 
-  return (
-    <>
-      <div className="flex justify-between px-6 py-4">
-        <h2 className="text-lg font-semibold mb-4">{course?.course_title}</h2>
-        <Button onClick={() => setDrawerOpen(true)}>Add New Section</Button>
-      </div>
+	return (
+		<>
+			<div className="flex justify-between px-6 py-4">
+				<h2 className="text-lg font-semibold mb-4">{course?.course_title}</h2>
+				<Button onClick={() => setDrawerOpen(true)}>Add New Section</Button>
+			</div>
 
-      {course_sections?.length ? (
-        <SectionList course_sections={course_sections} />
-      ) : (
-        <div>
-          <p className="text-sm text-muted-foreground font-medium">
-            No Sections yet
-          </p>
-        </div>
-      )}
-      {drawerOpen && (
-        <CreateSection open={drawerOpen} setOpen={setDrawerOpen} />
-      )}
-    </>
-  );
+			{course_sections?.length ? (
+				<SectionList course_sections={course_sections} />
+			) : (
+				<div>
+					<p className="text-sm text-muted-foreground font-medium">
+						No Sections yet
+					</p>
+				</div>
+			)}
+			{drawerOpen && (
+				<CreateSection
+					open={drawerOpen}
+					setOpen={setDrawerOpen}
+				/>
+			)}
+		</>
+	);
 }

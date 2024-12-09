@@ -99,23 +99,6 @@ export default function CreateCourseForm({
 	}, [initialData]);
 	//   console.log(initialData);
 
-	const handleFinish = async (values: CourseFormValues) => {
-		try {
-			// Process form values and submit
-			const processedData = {
-				...values,
-				course_start_date: values.course_start_date.format("YYYY-MM-DD"),
-				course_end_date: values.course_end_date.format("YYYY-MM-DD"),
-			};
-			console.log("processedData", processedData);
-			onSubmit(processedData);
-			form.reset();
-			setOpen(false);
-		} catch (error) {
-			console.error("Form submission error:", error);
-		}
-	};
-
 	return (
 		<Sheet
 			open={open}
@@ -129,10 +112,7 @@ export default function CreateCourseForm({
 						Complete the form below to create a new course.
 					</SheetDescription>
 				</SheetHeader>
-				<Form
-					{...form}
-					onFinish={handleFinish}
-				>
+				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-3 mt-6 px-1"
@@ -215,7 +195,7 @@ export default function CreateCourseForm({
 											<PopoverContent className="w-auto p-0">
 												<Calendar
 													mode="single"
-													captionLayout="dropdown"
+													captionLayout="dropdown-buttons"
 													selected={
 														field.value ? new Date(field.value) : undefined
 													}
@@ -263,7 +243,7 @@ export default function CreateCourseForm({
 											<PopoverContent className="w-auto p-0">
 												<Calendar
 													mode="single"
-													captionLayout="dropdown"
+													captionLayout="dropdown-buttons"
 													selected={
 														field.value ? new Date(field.value) : undefined
 													}

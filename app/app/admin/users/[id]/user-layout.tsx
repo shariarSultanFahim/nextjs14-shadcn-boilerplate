@@ -54,6 +54,7 @@ export default function UserLayout({
 					</div>
 				</div>
 				<Separator />
+				<div className="flex-1 p-8">{children}</div>
 			</div>
 		</>
 	);
